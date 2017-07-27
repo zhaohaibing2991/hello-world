@@ -1,0 +1,105 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Welcome to Flexmonster Pivot Table and Charts Component</title>
+	<link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+	<!-- HEADER -->
+	<div class="container">
+		<div class="header">
+			<div class="headerLogo">
+                <a href="http://www.flexmonster.com/" target="_blank"><img src="http://www.flexmonster.com/images/email/logo.svg" height="40" border="0" /></a>
+            </div>
+	    </div>
+		<div class="ContentArea">
+			<div class="MainWideArea"></div>
+			<div class="MainArea">
+				<div>
+					<h1>How to connect to static CSV or JSON files</h1>
+				<h3>Step 1: Embed the component into your web page</h3>
+					<p>Embedding Flexmonster Pivot is a simple copy-paste procedure that takes just minutes!</p>
+					<ul>
+						<li>Copy contents of <code>client/</code> folder into the web project root to your server.</li>
+						<li>Copy the code below and paste it into your HTML page.
+<pre><span class="tag">&lt;div id=<span class="value">"pivotContainer"</span>&gt;</span><span class="value">The component will appear here</span><span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;script type=<span class="value">"text/javascript"</span> src=<span class="value">"flexmonster/lib/jquery.min.js"</span>&gt;&lt;/script&gt;</span>
+<span class="tag">&lt;script type=<span class="value">"text/javascript"</span> src=<span class="value">"flexmonster/flexmonster.js"</span>&gt;&lt;/script&gt;</span>
+
+<span class="tag">&lt;script&gt;</span>
+   var pivot = $(<span class="value">"#pivotContainer"</span>).flexmonster({
+      toolbar: <span class="value">true</span>,
+      licenseKey: <span class="value">"Z7PY-XCIE1E-2D5A5H-3H4Q5G"</span>
+   });
+<span class="tag">&lt;/script&gt;</span>
+</pre>
+	</li>
+</ul>
+<p>Run your web page and see the empty table. The next step is to see your own data on the grid.</p>
+
+<h3>Step 2: Configure report with your own data </h3>
+<p>Let’s say you have the following CSV file called <code>data.csv</code>. To make it simple, copy this file to the <code>flexmonster/</code> folder.</p>
+<pre>
+Category,Size,Color,Destination,Business Type,Country,Price,Quantity,Discount
+Accessories,262 oz,red,Australia,Specialty Bike Shop,Australia,174,225,23
+Accessories,214 oz,yellow,Canada,Specialty Bike Shop,Canada,502,90,17
+Accessories,147 oz,white,France,Specialty Bike Shop,France,242,855,37
+Accessories,112 oz,yellow,Germany,Specialty Bike Shop,Germany,102,897,42
+</pre>
+
+<p>Add filename property to report object:</p>
+<pre>var pivot = $(<span class="value">"#pivotContainer"</span>).flexmonster({
+   toolbar: <span class="value">true</span>,
+   report: {
+      dataSource: {
+         <span class="comment">/* OR URL to the CSV file */</span>  
+         filename: <span class="value">"data.csv"</span>,
+
+         <span class="comment">/* OR URL to the JSON file */</span>  
+         <span class="comment">/*filename: <span class="value">"data.json"</span>,*/</span>
+      }
+   },
+   licenseKey: <span class="value">"Z7PY-XCIE1E-2D5A5H-3H4Q5G"</span>
+);
+</pre>
+<p>Launch the web page from browser — here you go! A pivot table is embedded into your project.</p>
+					<h3>See live demo</h3>
+					<p>See how CSV is used in <a href="client/index.html" target="_blank">client/index.html</a> and connect to your own CSV or JSON.</p>
+
+					<h3>See also:</h3>
+					<p>
+							<a href="http://www.flexmonster.com/doc/json-data-source/" target="_blank">
+								JSON data source
+							</a>
+					</p>
+					<p>
+							<a href="http://www.flexmonster.com/doc/csv-data-source/" target="_blank">
+								CSV data source
+							</a>
+					</p>
+					</br>
+				</div>
+
+				<table class="BottomLinks">
+					<tr>
+						<td>
+							<a href="http://www.flexmonster.com/pricing/" target="_blank">Check pricing</a>
+						</td>
+						<td>
+							<a href="http://www.flexmonster.com/contact/" target="_blank">Give a feedback</a>
+						</td>
+						<td>
+							<a href="http://www.flexmonster.com/doc/" target="_blank">Documentation</a>
+						</td>
+						<td>
+							<a href="http://www.flexmonster.com/forum/" target="_blank">Technical support</a>
+						</td>
+					<tr>
+				</table>
+				<br/>
+			</div>
+		</div>
+    </div>
+</body>
+</html>
