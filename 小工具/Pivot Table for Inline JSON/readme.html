@@ -1,0 +1,137 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Welcome to Flexmonster Pivot Table and Charts Component</title>
+	<link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+	<!-- HEADER -->
+	<div class="container">
+		<div class="header">
+			<div class="headerLogo">
+                <a href="http://www.flexmonster.com/" target="_blank"><img src="http://www.flexmonster.com/images/email/logo.svg" height="40" border="0" /></a>
+            </div>
+	    </div>
+		<div class="ContentArea">
+			<div class="MainWideArea"></div>
+			<div class="MainArea">
+				<div>
+					<h1>How to use inline JSON data</h1>
+					<p>JSON data source is good to display data which already is on your page. This is the most simple case of the configuration.</p>
+					<p>
+						The component supports a certain format of JSON – array of objects, where each object is an unordered set of name/value pairs. For example:
+					</p>
+<pre>var jsonData = [
+   {
+      <span class="value">"Color"</span> : <span class="value">"green"</span>,
+      <span class="value">"Country"</span> : <span class="value">"Canada"</span>,
+      <span class="value">"State"</span> : <span class="value">"Ontario"</span>,
+      <span class="value">"City"</span> : <span class="value">"Toronto"</span>,
+      <span class="value">"Price"</span> : <span class="value">174</span>,
+      <span class="value">"Quantity"</span> : <span class="value">22</span>
+   },
+   {
+      <span class="value">"Color"</span> : <span class="value">"red"</span>,
+      <span class="value">"Country"</span> : <span class="value">"USA"</span>,
+      <span class="value">"State"</span> : <span class="value">"California"</span>,
+      <span class="value">"City"</span> : <span class="value">"Los Angeles"</span>,
+      <span class="value">"Price"</span> : <span class="value">166</span>,
+      <span class="value">"Quantity"</span> : <span class="value">19</span>
+   }
+];
+</pre>
+<p>You need to accomplish the following steps to use JSON data as a data source in pivot table embedded into your project.</p>
+				<h3>Step 1: Embed the component into your web page</h3>
+					<p>Embedding Flexmonster Pivot is a simple copy-paste procedure that takes just minutes!</p>
+					<ul>
+						<li>Copy contents of <code>client/</code> folder into the web project root to your server.</li>
+						<li>Copy the code below and paste it into your HTML page.
+<pre><span class="tag">&lt;div id=<span class="value">"pivotContainer"</span>&gt;</span><span class="value">The component will appear here</span><span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;script type=<span class="value">"text/javascript"</span> src=<span class="value">"flexmonster/lib/jquery.min.js"</span>&gt;&lt;/script&gt;</span>
+<span class="tag">&lt;script type=<span class="value">"text/javascript"</span> src=<span class="value">"flexmonster/flexmonster.js"</span>&gt;&lt;/script&gt;</span>
+
+<span class="tag">&lt;script&gt;</span>
+   var pivot = $(<span class="value">"#pivotContainer"</span>).flexmonster({
+      toolbar: <span class="value">true</span>,
+      licenseKey: <span class="value">"Z7PY-XCIE1E-2D5A5H-3H4Q5G"</span>
+   });
+<span class="tag">&lt;/script&gt;</span>
+</pre>
+	</li>
+</ul>
+<p>Run your web page and see the empty table. The next step is to see your own data on the grid.</p>
+
+<h3>Step 2: Configure report with your own data </h3>
+<p>Copy the following JSON and paste it into your HTML page:</p>
+<pre><span class="tag">&lt;div id=<span class="value">"pivotContainer"</span>&gt;</span><span class="value">The component will appear here</span><span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;script type=<span class="value">"text/javascript"</span> src=<span class="value">"flexmonster/lib/jquery.min.js"</span>&gt;&lt;/script&gt;</span>
+<span class="tag">&lt;script type=<span class="value">"text/javascript"</span> src=<span class="value">"flexmonster/flexmonster.js"</span>&gt;&lt;/script&gt;</span>
+
+<span class="tag">&lt;script&gt;</span>
+
+   var jsonData = [
+      {
+         <span class="value">"Color"</span> : <span class="value">"green"</span>,
+         <span class="value">"Country"</span> : <span class="value">"Canada"</span>,
+         <span class="value">"State"</span> : <span class="value">"Ontario"</span>,
+         <span class="value">"City"</span> : <span class="value">"Toronto"</span>,
+         <span class="value">"Price"</span> : <span class="value">174</span>,
+         <span class="value">"Quantity"</span> : <span class="value">22</span>
+      },
+      {
+         <span class="value">"Color"</span> : <span class="value">"red"</span>,
+         <span class="value">"Country"</span> : <span class="value">"USA"</span>,
+         <span class="value">"State"</span> : <span class="value">"California"</span>,
+         <span class="value">"City"</span> : <span class="value">"Los Angeles"</span>,
+         <span class="value">"Price"</span> : <span class="value">166</span>,
+         <span class="value">"Quantity"</span> : <span class="value">19</span>
+      }
+   ];
+
+   var pivot = $(<span class="value">"#pivotContainer"</span>).flexmonster({
+      toolbar: <span class="value">true</span>,
+      report: {
+         dataSource: {
+            data: <span class="value">jsonData</span>
+         }
+      },
+      licenseKey: <span class="value">"Z7PY-XCIE1E-2D5A5H-3H4Q5G"</span>
+   });
+<span class="tag">&lt;/script&gt;</span>
+</pre>
+<p>Launch the web page from browser — here you go! A pivot table is embedded into your project.</p>
+					<h3>See live demo</h3>
+					<p>See how JSON is used in <a href="client/index.html" target="_blank">client/index.html</a> and connect to your own JSON.</p>
+
+					<h3>See also:</h3>
+					<p>
+							<a href="http://www.flexmonster.com/doc/data-types-in-json/" target="_blank">
+								Data types in JSON
+							</a>
+					</p>
+					</br>
+				</div>
+
+				<table class="BottomLinks">
+					<tr>
+						<td>
+							<a href="http://www.flexmonster.com/pricing/" target="_blank">Check pricing</a>
+						</td>
+						<td>
+							<a href="http://www.flexmonster.com/contact/" target="_blank">Give a feedback</a>
+						</td>
+						<td>
+							<a href="http://www.flexmonster.com/doc/" target="_blank">Documentation</a>
+						</td>
+						<td>
+							<a href="http://www.flexmonster.com/forum/" target="_blank">Technical support</a>
+						</td>
+					<tr>
+				</table>
+				<br/>
+			</div>
+		</div>
+    </div>
+</body>
+</html>
