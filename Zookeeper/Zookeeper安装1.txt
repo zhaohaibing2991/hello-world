@@ -1,0 +1,44 @@
+
+#安装并配置JDK
+[root@zk ~]# tar -zxvf jdk-8u131-linux-x64.tar.gz -C /usr
+[root@zk ~]# vi .bash_profile
+
+	JAVA_HOME=/usr/jdk1.8.0_131
+	PATH=....
+	PATH=$JAVA_HOME/bin:$PATH
+	export JAVA_HOME
+
+
+#解压Zookeeper
+[root@zk ~]# tar -zxvf zookeeper-3.4.9.tar.gz -C /usr
+
+#创建Zookeeper的数据目录与日志目录
+[root@zk ~]# mkdir /usr/zookeeper-3.4.9/data
+[root@zk ~]# mkdir /usr/zookeeper-3.4.9/data/logs
+
+#查看zookeeper的默认配置文件内容
+[root@zk ~]# cat /usr/zookeeper-3.4.9/conf/zoo_sample.cfg
+#配置zookeeper(Zookeeper启动使用HOME目录下的conf目录下的zoo.cfg)
+[root@zk ~]# cp /usr/zookeeper-3.4.9/conf/zoo_sample.cfg /usr/zookeeper-3.4.9/conf/zoo.cfg
+[root@zk ~]# vi /usr/zookeeper-3.4.9/conf/zoo.cfg
+	tickTime=2000
+	#initLimit=10
+	#syncLimit=5
+	dataDir=/usr/zookeeper-3.4.9/data
+	dataLogDir=/usr/zookeeper-3.4.9/data/logs
+	clientPort=2181
+
+#启动zookeeper
+[root@zk ~]# cd /usr/zookeeper-3.4.9/bin
+[root@zk bin]# ./zkServer.sh start
+
+#使用zookeeper客户端
+[root@zk bin]# ./zkCli.sh 
+或
+[root@zk bin]# ./zkCli.sh -server localhost:2181
+
+#停止zookeeper
+[root@zk bin]# ./zkServer.sh stop
+
+
+Zookeeper伪集群搭建

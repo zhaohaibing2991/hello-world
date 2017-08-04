@@ -1,0 +1,185 @@
+
+#安装并配置JDK
+[root@zk ~]# tar -zxvf jdk-8u131-linux-x64.tar.gz -C /usr
+[root@zk ~]# vi .bash_profile
+
+	JAVA_HOME=/usr/jdk1.8.0_131
+	PATH=....
+	PATH=$JAVA_HOME/bin:$PATH
+	export JAVA_HOME
+
+
+#解压Zookeeper
+[root@zk ~]# tar -zxvf zookeeper-3.4.9.tar.gz -C /usr
+
+#创建Zookeeper的数据目录与日志目录
+[root@zk ~]# mkdir /usr/zookeeper-3.4.9/data
+[root@zk ~]# mkdir /usr/zookeeper-3.4.9/data/logs
+
+#查看zookeeper的默认配置文件内容
+[root@zk ~]# cat /usr/zookeeper-3.4.9/conf/zoo_sample.cfg
+#配置zookeeper(Zookeeper启动使用HOME目录下的conf目录下的zoo.cfg)
+[root@zk ~]# cp /usr/zookeeper-3.4.9/conf/zoo_sample.cfg /usr/zookeeper-3.4.9/conf/zoo.cfg
+[root@zk ~]# vi /usr/zookeeper-3.4.9/conf/zoo.cfg
+	tickTime=2000
+	#initLimit=10
+	#syncLimit=5
+	dataDir=/usr/zookeeper-3.4.9/data
+	dataLogDir=/usr/zookeeper-3.4.9/data/logs
+	clientPort=2181
+
+#启动zookeeper
+[root@zk ~]# cd /usr/zookeeper-3.4.9/bin
+[root@zk bin]# ./zkServer.sh start
+ZooKeeper JMX enabled by default
+Using config: /usr/zookeeper-3.4.9/bin/../conf/zoo.cfg
+Starting zookeeper ... STARTED
+
+#使用zookeeper客户端
+[root@zk bin]# ./zkCli.sh 
+或
+[root@zk bin]# ./zkCli.sh -server localhost:2181
+
+#停止zookeeper
+[root@zk bin]# ./zkServer.sh stop
+ZooKeeper JMX enabled by default
+Using config: /usr/zookeeper-3.4.9/bin/../conf/zoo.cfg
+Stopping zookeeper ... STOPPED
+
+最好3台以上机器
+Zookeeper伪集群搭建
+
+#解压Zookeeper
+[root@zk ~]# tar -zxvf zookeeper-3.4.9.tar.gz
+
+#重命名为zk1
+[root@zk ~]# mv zookeeper-3.4.9 zk1
+
+#移动至/usr目录下
+[root@zk ~]# mv zk1/ /usr
+
+#创建Zookeeper的数据目录与日志目录
+[root@zk ~]# mkdir /usr/zk1/data
+[root@zk ~]# mkdir /usr/zk1/data/logs
+
+#创建配置文件
+[root@zk ~]# cp /usr/zk1/conf/zoo_sample.cfg /usr/zk1/conf/zoo.cfg
+#编辑配置文件
+[root@zk ~]# vi /usr/zk1/conf/zoo.cfg
+	tickTime=2000
+	initLimit=10
+	syncLimit=5
+	dataDir=/usr/zk1/data
+	dataLogDir=/usr/zk1/data/logs
+	clientPort=2181
+
+	server.1=192.168.152.134:2890:3890
+	server.2=192.168.152.134:2891:3891
+	server.3=192.168.152.134:2892:3892
+
+	注意: 搭建伪集群是在同一台机器中, 所以IP地址相同, 但后面的两个端口号不能相同
+		第一个端口号代表集群内部通信端口, 第二个端口号代表选举leader的端口
+		如果在不同的机器中, 那么IP地址不能相同, 但两个端口号必须相同
+
+#创建myid文件
+[root@zk ~]# cd /usr/zk1/data/
+[root@zk data]# touch myid
+#编辑myid文件
+[root@zk data]# vi myid
+	1
+
+	注意: 此文件中的数字必须与zoo.cfg中的server.X的值一致
+
+#配置第二个zookeeper
+[root@zk data]# cd /usr
+[root@zk usr]# cp -r zk1 zk2
+#编辑zoo.cfg
+[root@zk usr]# vi zk2/conf/zoo.cfg
+
+	tickTime=2000
+	initLimit=10
+	syncLimit=5
+	dataDir=/usr/zk2/data
+	dataLogDir=/usr/zk2/data/logs
+	clientPort=2182
+
+	server.1=192.168.152.134:2890:3890
+	server.2=192.168.152.134:2891:3891
+	server.3=192.168.152.134:2892:3892
+#编辑myid文件
+[root@zk usr]# vi zk2/data/myid 
+	2
+
+#配置第三个zookeeper
+[root@zk usr]# cp -r zk2 zk3
+#编辑zoo.cfg
+[root@zk usr]# vi zk3/conf/zoo.cfg 	
+	tickTime=2000
+	initLimit=10
+	syncLimit=5
+	dataDir=/usr/zk3/data
+	dataLogDir=/usr/zk3/data/logs
+	clientPort=2183
+
+	server.1=192.168.152.134:2890:3890
+	server.2=192.168.152.134:2891:3891
+	server.3=192.168.152.134:2892:3892
+##编辑myid文件
+[root@zk usr]# vi zk3/data/myid 
+	3
+
+#分别启动三个zookeeper
+[root@zk usr]# ./zk1/bin/zkServer.sh start
+ZooKeeper JMX enabled by default
+Using config: /usr/zk1/bin/../conf/zoo.cfg
+Starting zookeeper ... STARTED
+[root@zk usr]# ./zk2/bin/zkServer.sh start
+ZooKeeper JMX enabled by default
+Using config: /usr/zk2/bin/../conf/zoo.cfg
+Starting zookeeper ... STARTED
+[root@zk usr]# ./zk3/bin/zkServer.sh start
+ZooKeeper JMX enabled by default
+Using config: /usr/zk3/bin/../conf/zoo.cfg
+Starting zookeeper ... STARTED
+
+#通过status查看集群状态
+[root@zk usr]# ./zk1/bin/zkServer.sh status
+ZooKeeper JMX enabled by default
+Using config: /usr/zk1/bin/../conf/zoo.cfg
+Mode: follower
+[root@zk usr]# ./zk2/bin/zkServer.sh status
+ZooKeeper JMX enabled by default
+Using config: /usr/zk2/bin/../conf/zoo.cfg
+Mode: leader
+[root@zk usr]# ./zk3/bin/zkServer.sh status
+ZooKeeper JMX enabled by default
+Using config: /usr/zk3/bin/../conf/zoo.cfg
+Mode: follower
+
+#登录zookeeper客户端
+[root@zk usr]# ./zk3/bin/zkCli.sh 
+
+
+#停止leader的服务
+[root@zk usr]# ./zk2/bin/zkServer.sh stop
+ZooKeeper JMX enabled by default
+Using config: /usr/zk2/bin/../conf/zoo.cfg
+Stopping zookeeper ... STOPPED
+
+#再次查看各zookeeper的状态
+[root@zk usr]# ./zk1/bin/zkServer.sh status
+ZooKeeper JMX enabled by default
+Using config: /usr/zk1/bin/../conf/zoo.cfg
+Mode: follower
+[root@zk usr]# ./zk2/bin/zkServer.sh status
+ZooKeeper JMX enabled by default
+Using config: /usr/zk2/bin/../conf/zoo.cfg
+Error contacting service. It is probably not running.
+[root@zk usr]# ./zk3/bin/zkServer.sh status
+ZooKeeper JMX enabled by default
+Using config: /usr/zk3/bin/../conf/zoo.cfg
+Mode: leader
+
+#发现zk3变化成为leader
+
+
